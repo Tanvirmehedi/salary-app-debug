@@ -82,13 +82,18 @@ const initialCountListener = function () {
 function addRecordHandler() {
   const name = document.getElementById("name").value;
   const salary = document.getElementById("salary").value;
-
+  if (name === "" || salary === "" || isNaN(salary)) {
+    console.log("Its Error Of Blank");
+    return;
+  }
   if (!name || !salary) {
     showDataError(name, salary);
     return;
   }
 
-  addRecord(name, !salary);
+  addRecord(name, salary);
+  document.getElementById("name").value = "";
+  document.getElementById("salary").value = "";
 }
 
 function addRecord(name, salary) {
@@ -115,9 +120,9 @@ function secondHandler(e) {
 const showLastItem = function () {
   const items = salary_data;
   let lastKey;
-  for (const key in items){
+  for (const key in items) {
     lastKey = key;
-  };
+  }
   const lastItem = items[lastKey];
   const lastRecord = getRecord(lastItem.name, lastItem.salary);
   displayLastItemDialog(lastRecord);
@@ -136,6 +141,7 @@ const displayLastItemDialog = function (lastItem) {
   document.getElementById("showSalary").innerText = d3.format(",.0f")(
     lastItem.salary
   );
+
   dlg.dialog({
     buttons: {
       Ok: function () {
